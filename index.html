@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAHH</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  font-family:Arial, sans-serif;
+  color:white;
+}
+
+#fahhBtn{
+  background:#e00000;
+  color:white;
+  border:none;
+  padding:25px 60px;
+  font-size:28px;
+  font-weight:bold;
+  border-radius:100px;
+  cursor:pointer;
+  box-shadow:
+    0 15px 0 #8a0000,
+    0 20px 40px rgba(0,0,0,0.6);
+  transition:all 0.1s ease;
+}
+
+#fahhBtn:active{
+  transform:translateY(12px);
+  box-shadow:
+    0 3px 0 #8a0000,
+    0 10px 25px rgba(0,0,0,0.5);
+}
+
+.note{
+  margin-top:25px;
+  font-size:16px;
+  opacity:0.8;
+  text-align:center;
+  letter-spacing:0.5px;
+}
+</style>
+</head>
+
+<body>
+
+<button id="fahhBtn">fahh</button>
+
+<div class="note">
+Never underestimate Batman Danish Moron
+</div>
+
+<script>
+const sound = new Audio("https://raw.githubusercontent.com/KN1GHTW1NG/Fahh.mp3/main/Fahh.mp3.mp3");
+const click = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=");
+const button = document.getElementById("fahhBtn");
+
+button.addEventListener("click", function(){
+  click.currentTime = 0;
+  sound.currentTime = 0;
+  click.play();
+  sound.play();
+
+  if(navigator.vibrate){
+    navigator.vibrate(15);
+  }
+});
+</script>
+
+</body>
+</html>
