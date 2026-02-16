@@ -30,7 +30,6 @@ body {
   touch-action: manipulation;
 }
 
-/* Background turns white while holding */
 body.holding {
   background: #fff;
   color: #000;
@@ -42,33 +41,31 @@ body.holding {
   place-items: center;
 }
 
-/* BIG RED CIRCLE */
 button {
-  width: 220px;
-  height: 220px;
+  width: 230px;
+  height: 230px;
   border-radius: 50%;
   border: none;
   background: radial-gradient(circle at 30% 30%, #ff2a2a, var(--red));
   color: #fff;
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 900;
   letter-spacing: 3px;
   cursor: pointer;
 
   box-shadow:
-    0 16px 0 var(--red-dark),
-    0 24px 40px rgba(0,0,0,0.55);
+    0 18px 0 var(--red-dark),
+    0 28px 45px rgba(0,0,0,0.55);
 
   transform: translateY(0);
   transition: transform 70ms ease, box-shadow 70ms ease, filter 120ms ease;
 }
 
-/* Press effect */
 button:active {
-  transform: translateY(14px);
+  transform: translateY(16px);
   box-shadow:
     0 4px 0 var(--red-dark),
-    0 12px 20px rgba(0,0,0,0.5);
+    0 14px 25px rgba(0,0,0,0.5);
   filter: brightness(0.96);
 }
 
@@ -83,11 +80,10 @@ button:active {
 <body>
 <div class="wrap">
   <button id="btn">FAHH</button>
-  <div class="note">Made by Knightwing</div>
+  <div class="note">made by nightwing</div>
 
-  <audio id="sound" preload="auto">
-    <source src="fahh.mp3" type="audio/mpeg">
-    <source src="fahh.wav" type="audio/wav">
+  <audio id="sound" preload="auto"
+    src="https://raw.githubusercontent.com/KN1GHTW1NG/Fahh.mp3/main/Fahh.mp3.mp3">
   </audio>
 </div>
 
