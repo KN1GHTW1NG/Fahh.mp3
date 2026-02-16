@@ -11,6 +11,7 @@
   --fg:#fff;
   --red:#e00000;
   --red-dark:#b00000;
+  --red-light:#ff2a2a;
 }
 
 html,body{
@@ -23,11 +24,11 @@ html,body{
 }
 
 body{
-  display:grid;
-  place-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   user-select:none;
   -webkit-user-select:none;
-  touch-action:manipulation;
 }
 
 body.holding{
@@ -35,91 +36,97 @@ body.holding{
   color:#000;
 }
 
-.wrap{
-  display:grid;
-  gap:22px;
-  place-items:center;
+.container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:28px;
 }
 
 button{
-  width:230px;
-  height:230px;
+  width:240px;
+  height:240px;
   border-radius:50%;
   border:none;
-  background:radial-gradient(circle at 30% 30%,#ff2a2a,var(--red));
-  color:#fff;
-  font-size:44px;
-  font-weight:900;
-  letter-spacing:3px;
   cursor:pointer;
 
-  box-shadow:
-    0 18px 0 var(--red-dark),
-    0 28px 45px rgba(0,0,0,0.55);
+  background:radial-gradient(circle at 30% 30%, var(--red-light), var(--red));
+  color:#fff;
+
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:4px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   transform:translateY(0);
-  transition:transform 70ms ease,box-shadow 70ms ease,filter 120ms ease;
+  transition:transform 80ms ease, box-shadow 80ms ease;
+
+  box-shadow:
+    0 20px 0 var(--red-dark),
+    0 35px 60px rgba(0,0,0,0.6);
 }
 
 button:active{
-  transform:translateY(16px);
+  transform:translateY(18px);
   box-shadow:
-    0 4px 0 var(--red-dark),
-    0 14px 25px rgba(0,0,0,0.5);
-  filter:brightness(0.96);
+    0 5px 0 var(--red-dark),
+    0 15px 30px rgba(0,0,0,0.55);
 }
 
 .note{
-  font-size:13px;
+  font-size:14px;
   opacity:0.6;
-  letter-spacing:0.6px;
 }
 </style>
 </head>
 
 <body>
-<div class="wrap">
+
+<div class="container">
+
   <button id="btn">FAHH</button>
   <div class="note">Made by Knightwing</div>
 
-  <audio id="sound" preload="auto" crossorigin="anonymous">
-    <source src="https://raw.githubusercontent.com/KN1GHTW1NG/Fahh.mp3/main/Fahh.mp3.mp3" type="audio/mpeg">
+  <audio id="sound"
+    src="https://raw.githubusercontent.com/KN1GHTW1NG/Fahh.mp3/main/Fahh.mp3.mp3"
+    preload="auto">
   </audio>
+
 </div>
 
 <script>
+
 const btn = document.getElementById("btn");
-const audio = document.getElementById("sound");
+const sound = document.getElementById("sound");
 
-function setHolding(state){
-  document.body.classList.toggle("holding",state);
-}
+btn.addEventListener("mousedown", function(){
+  document.body.classList.add("holding");
+  sound.currentTime = 0;
+  sound.play();
+});
 
-async function playSound(){
-  try{
-    audio.currentTime = 0;
-    await audio.play();
-  }catch(e){
-    console.log("Playback blocked:",e);
-  }
-}
+btn.addEventListener("mouseup", function(){
+  document.body.classList.remove("holding");
+});
 
-const pressStart = async (e)=>{
-  e.preventDefault();
-  setHolding(true);
-  await playSound();
-};
+btn.addEventListener("mouseleave", function(){
+  document.body.classList.remove("holding");
+});
 
-const pressEnd = (e)=>{
-  e.preventDefault();
-  setHolding(false);
-};
+/* Mobile support */
+btn.addEventListener("touchstart", function(){
+  document.body.classList.add("holding");
+  sound.currentTime = 0;
+  sound.play();
+});
 
-btn.addEventListener("touchstart",pressStart,{passive:false});
-btn.addEventListener("touchend",pressEnd,{passive:false});
-btn.addEventListener("touchcancel",pressEnd,{passive:false});
-btn.addEventListener("mousedown",pressStart);
-window.addEventListener("mouseup",pressEnd);
+btn.addEventListener("touchend", function(){
+  document.body.classList.remove("holding");
+});
+
 </script>
 
 </body>
