@@ -1,76 +1,140 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FAHH</title>
 
 <style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:black;
-  font-family:Arial, sans-serif;
-  color:white;
+:root{
+  --bg: #000;
+  --fg: #fff;
+  --red: #e00000;
+  --red-dark: #b00000;
 }
 
-#fahhBtn{
-  background:#e00000;
-  color:white;
-  border:none;
-  padding:25px 60px;
-  font-size:28px;
-  font-weight:bold;
-  border-radius:100px;
-  cursor:pointer;
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  transition: background-color 120ms linear, color 120ms linear;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+/* Background turns white while holding */
+body.holding {
+  background: #fff;
+  color: #000;
+}
+
+.wrap {
+  display: grid;
+  gap: 22px;
+  place-items: center;
+}
+
+/* BIG RED CIRCLE */
+button {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle at 30% 30%, #ff2a2a, var(--red));
+  color: #fff;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  cursor: pointer;
+
   box-shadow:
-    0 15px 0 #8a0000,
-    0 20px 40px rgba(0,0,0,0.6);
-  transition:all 0.1s ease;
+    0 16px 0 var(--red-dark),
+    0 24px 40px rgba(0,0,0,0.55);
+
+  transform: translateY(0);
+  transition: transform 70ms ease, box-shadow 70ms ease, filter 120ms ease;
 }
 
-#fahhBtn:active{
-  transform:translateY(12px);
+/* Press effect */
+button:active {
+  transform: translateY(14px);
   box-shadow:
-    0 3px 0 #8a0000,
-    0 10px 25px rgba(0,0,0,0.5);
+    0 4px 0 var(--red-dark),
+    0 12px 20px rgba(0,0,0,0.5);
+  filter: brightness(0.96);
 }
 
-.note{
-  margin-top:25px;
-  font-size:16px;
-  opacity:0.8;
-  text-align:center;
-  letter-spacing:0.5px;
+.note {
+  font-size: 13px;
+  opacity: 0.6;
+  letter-spacing: 0.6px;
 }
 </style>
 </head>
 
 <body>
+<div class="wrap">
+  <button id="btn">FAHH</button>
+  <div class="note">Made by Knightwing</div>
 
-<button id="fahhBtn">fahh</button>
-
-<div class="note">
-Never underestimate Batman Danish Moron
+  <audio id="sound" preload="auto">
+    <source src="fahh.mp3" type="audio/mpeg">
+    <source src="fahh.wav" type="audio/wav">
+  </audio>
 </div>
 
 <script>
-const sound = new Audio("https://raw.githubusercontent.com/KN1GHTW1NG/Fahh.mp3/main/Fahh.mp3.mp3");
-const click = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=");
-const button = document.getElementById("fahhBtn");
+const btn = document.getElementById("btn");
+const audio = document.getElementById("sound");
 
-button.addEventListener("click", function(){
-  click.currentTime = 0;
-  sound.currentTime = 0;
-  click.play();
-  sound.play();
+function setHolding(state){
+  document.body.classList.toggle("holding", state);
+}
 
-  if(navigator.vibrate){
-    navigator.vibrate(15);
+async function playSound(){
+  try{
+    audio.currentTime = 0;
+    await audio.play();
+  }catch(e){
+    console.warn(e);
+  }
+}
+
+const pressStart = async (e) => {
+  e.preventDefault();
+  setHolding(true);
+  await playSound();
+};
+
+const pressEnd = (e) => {
+  e.preventDefault();
+  setHolding(false);
+};
+
+btn.addEventListener("touchstart", pressStart, { passive: false });
+btn.addEventListener("touchend", pressEnd, { passive: false });
+btn.addEventListener("touchcancel", pressEnd, { passive: false });
+
+btn.addEventListener("mousedown", pressStart);
+window.addEventListener("mouseup", pressEnd);
+
+btn.addEventListener("keydown", (e)=>{
+  if(e.code === "Space" || e.code === "Enter"){
+    setHolding(true);
+    playSound();
+  }
+});
+btn.addEventListener("keyup", (e)=>{
+  if(e.code === "Space" || e.code === "Enter"){
+    setHolding(false);
   }
 });
 </script>
